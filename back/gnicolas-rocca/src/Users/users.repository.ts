@@ -150,16 +150,4 @@ export class UsersRepository {
       message: 'Usuario eliminado correctamente',
     };
   }
-
-  no_params_repo(page?: number, limit?: number) {
-    // ver clase y chequear act 4
-    page = page ?? 1;
-    limit = limit ?? 5;
-    page = Number(page);
-    limit = Number(limit);
-    console.log('Page es: ', page, ' y Limit es: ', limit);
-    console.log(typeof limit);
-    console.log(typeof page);
-    // no retorna nada y no es async no se si es un problema eso analizar si es un problema
-  }
 }

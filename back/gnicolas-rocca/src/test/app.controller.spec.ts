@@ -14,11 +14,11 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('Raiz', () => {
+    it('Deberia devolver: Hola bienvenido 11000010 10100001 01000101 01101110 01100011 01101111 01101110 01110100 01110010 01100001 01110011 01110100 01100101 00100000 01110101 01101110 00100000 01100101 01100001 01110011 01110100 01100101 01110010 00100000 01100101 01100111 01100111 00100001', () => {
+      expect(appController.home_init()).toBe(
+        'Hola bienvenido 11000010 10100001 01000101 01101110 01100011 01101111 01101110 01110100 01110010 01100001 01110011 01110100 01100101 00100000 01110101 01101110 00100000 01100101 01100001 01110011 01110100 01100101 01110010 00100000 01100101 01100111 01100111 00100001',
+      );
     });
   });
 });
-
-// Estaba en la raiz de src, pero lo cambie a aca porque es un test

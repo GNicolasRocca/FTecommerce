@@ -65,9 +65,12 @@ export class UsersService {
   }
 
   no_params(page?: number, limit?: number) {
-    console.log('Estamos en el servicio', page, limit);
-    return this.usersRepository.no_params_repo(page, limit);
+    // ver clase y chequear act 4
+    page = page ?? 1;
+    limit = limit ?? 5;
+    page = Number(page);
+    limit = Number(limit);
+    console.log('Page es: ', page, ' y Limit es: ', limit);
+    // no retorna nada y no es async no se si es un problema eso analizar si es un problema
   }
 }
-
-// http://localhost:3000/users

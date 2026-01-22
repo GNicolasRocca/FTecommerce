@@ -19,5 +19,5 @@ async function bootstrap() {
 }
 bootstrap();
 
-// Git add . en la altura del proyecto, commit en /gnicolas-rocca y push en /back/
+// Todos los comandos para pushear en la carpeta raiz del proyecto (pm4be...)
 // Extra: Nest Pipes --- ACT 4: Agrega el manejo de errores que creas correspondiente para cada ruta
