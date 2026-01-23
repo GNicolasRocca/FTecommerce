@@ -16,17 +16,21 @@ import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   // Con private readonly indicamos solo lectura, no lo podemos modificar
 
+  // esto no va porque se supone que funciona con dtos el plugin de swagger
   @Post('seeder')
   async seeder_users() {
     return this.usersService.seeder();
   }
 
+  @ApiBearerAuth()
   @Get('/') // Se debe devolver en el metodo si es admin
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
@@ -61,6 +65,7 @@ export class UsersController {
   }
   */
 
+  @ApiBearerAuth()
   @Get(':id') // Tendria que poner algo para que no me traiga la contraseña del usuario
   @UseGuards(AuthGuard)
   @HttpCode(200)
@@ -82,6 +87,7 @@ export class UsersController {
     return this.usersService.get_user_by_id(id);
   }
 
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
@@ -93,6 +99,7 @@ export class UsersController {
     return this.usersService.update_user_id(id, user);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)

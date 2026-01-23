@@ -27,7 +27,7 @@ export class Users {
   @Column('varchar', { length: 50 })
   city: string;
 
-  @Column({ default: true }) // le puse true para probar los metodos admin
+  @Column({ default: false }) // true para probar los metodos admin
   is_admin: boolean;
 
   @OneToMany(() => Orders, (order) => order.user)

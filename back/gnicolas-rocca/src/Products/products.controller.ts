@@ -17,6 +17,9 @@ import * as productInterface from 'src/interfaces/product.interface';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from 'src/Users/users.service';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -44,6 +47,7 @@ export class ProductsController {
     return this.productsService.get_all_products();
   }
 
+  @ApiBearerAuth()
   @Post('create')
   @UseGuards(AuthGuard)
   @HttpCode(201)
@@ -51,6 +55,7 @@ export class ProductsController {
     return this.productsService.create_product(product);
   }
 
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
@@ -61,6 +66,7 @@ export class ProductsController {
     return this.productsService.update_product_id(id, product);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
