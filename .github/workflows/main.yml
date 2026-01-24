@@ -26,6 +26,6 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./dockerfile
+        file: ./back/gnicolas-rocca/dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/nest-demo:latest
