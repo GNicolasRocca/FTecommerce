@@ -4,6 +4,8 @@ export interface Users {
   email: string;
   password: string;
   phone: number;
+  address: string;
   country: string;
+  is_admin: boolean;
   city: string;
 }

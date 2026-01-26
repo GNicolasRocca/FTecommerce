@@ -51,6 +51,12 @@ export class CreateUsersDto {
   phone: number;
 
   @IsString()
+  @ApiProperty({
+    example: 'Avenida Siempre Viva 1435',
+  })
+  address: string;
+
+  @IsString()
   @Length(5, 20)
   @ApiProperty({
     description: 'Debe ser de largo entre 5 y 20 cáracteres máximo',
@@ -69,5 +75,3 @@ export class CreateUsersDto {
   })
   is_admin: boolean;
 }
-// Faltaria adress pero tengo que agregarlo en users entity, chequear que validaciones poner en la HW pipes
-// Le podria agregar a las description de apiProperty las validaciones de los pipes

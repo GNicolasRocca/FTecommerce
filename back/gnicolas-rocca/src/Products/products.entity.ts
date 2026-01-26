@@ -8,14 +8,13 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 
 @Entity({
   name: 'products',
 })
 export class Products {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id: string;
 
   @Column('varchar', { length: 50, nullable: false })
   name: string;

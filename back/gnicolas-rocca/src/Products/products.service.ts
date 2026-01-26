@@ -10,7 +10,7 @@ export class ProductsService {
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
 
-  seed_products = [
+  private readonly seed_products = [
     {
       name: 'Samsung Galaxy S23',
       description: 'The best smartphone in the world',
@@ -62,7 +62,7 @@ export class ProductsService {
     return { message: 'Seeder de productos ejecutado correctamente' };
   }
 
-  async get_all_products() {
+  get_all_products() {
     return this.productsRepository.get_products();
   }
 
@@ -81,6 +81,10 @@ export class ProductsService {
     });
   }
 
+  get_product_id(id: string) {
+    return this.productsRepository.get_by_id(id);
+  }
+
   update_product_id(
     id: string,
     product: Partial<Omit<productInterface.Product, 'id'>>,
@@ -91,10 +95,4 @@ export class ProductsService {
   delete_product_id(id: string) {
     return this.productsRepository.delete_product(id);
   }
-
-  get_product_id(id: string) {
-    return this.productsRepository.get_by_id(id);
-  }
 }
-
-// http://localhost:3000/products

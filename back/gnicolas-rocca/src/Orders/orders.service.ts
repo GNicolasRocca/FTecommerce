@@ -10,8 +10,7 @@ export class OrdersService {
     return this.ordersRepository.get_order(id);
   }
 
-  async order_creation(body: CreateOrderDto) {
-    console.log('Estamos en el controller');
+  order_creation(body: CreateOrderDto) {
     return this.ordersRepository.add_order(body);
   }
 }

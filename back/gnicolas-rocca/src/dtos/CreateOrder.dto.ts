@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsNotEmpty,
-  IsString,
   IsUUID,
   ArrayMinSize,
   ValidateNested,
@@ -11,7 +10,6 @@ import { OrderProductDto } from './OrderProduct.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderDto {
-  @IsString()
   @IsNotEmpty()
   @IsUUID()
   @ApiProperty({ example: 'uuid' })

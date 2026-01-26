@@ -6,12 +6,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './users.entity';
 import { Repository } from 'typeorm';
-import { UsersResponseDto } from 'src/dtos/ResponseUsers.dto';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
 // import * as bcrypt from 'bcrypt';
 import { hash, compare } from 'bcryptjs'; // compare se usa para login
 import { JwtService } from '@nestjs/jwt';
 import { Role } from 'src/auth/roles.enum';
+import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 
 @Injectable({})
 export class UsersRepository {
@@ -26,12 +26,21 @@ export class UsersRepository {
     return this.usersRepository.save(entities);
   }
 
-  async get_users(): Promise<UsersResponseDto[]> {
-    return Promise.resolve(
-      this.usersRepository.find({
-        relations: ['orders'],
-      }),
-    );
+  get_users() {
+    return this.usersRepository.find({
+      relations: ['orders'],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        country: true,
+        city: true,
+        is_admin: true,
+        orders: true,
+      },
+    });
   }
 
   /*
@@ -97,12 +106,12 @@ export class UsersRepository {
     };
   }
 
-  async find_user_email(email: string) {
-    return await this.usersRepository.findOne({ where: { email } });
+  find_user_email(email: string) {
+    return this.usersRepository.findOne({ where: { email } });
   }
 
-  async get_id(id: string): Promise<UsersResponseDto | null> {
-    return await this.usersRepository.findOne({
+  get_id(id: string) {
+    return this.usersRepository.findOne({
       where: { id },
       relations: ['orders'],
       select: {
@@ -110,6 +119,7 @@ export class UsersRepository {
         name: true,
         email: true,
         phone: true,
+        address: true,
         country: true,
         city: true,
         orders: true,
@@ -117,7 +127,7 @@ export class UsersRepository {
     });
   }
 
-  async update_user(id: string, user: CreateUsersDto) {
+  async update_user(id: string, user: UsersUpdateDto) {
     // Partial permite actualizar solo los campos enviados
     const user_exists = await this.usersRepository.findOne({
       where: { id },

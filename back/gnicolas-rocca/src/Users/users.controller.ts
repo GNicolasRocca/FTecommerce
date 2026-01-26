@@ -14,9 +14,11 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UsersResponseDto } from 'src/dtos/UsersResponse.dto';
+import { Users } from 'src/interfaces/user.interface';
+import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,19 +28,19 @@ export class UsersController {
 
   // esto no va porque se supone que funciona con dtos el plugin de swagger
   @Post('seeder')
-  async seeder_users() {
+  seeder_users() {
     return this.usersService.seeder();
   }
 
   @ApiBearerAuth()
-  @Get('/') // Se debe devolver en el metodo si es admin
+  @Get('/')
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
-  async get_users(
-    @Req() request: Request & { user: any },
+  get_users(
+    @Req() request: Request & { user: Users },
     @Query('page') page?: string,
     @Query('limit') limit?: string,
-  ) {
+  ): Promise<UsersResponseDto[]> {
     const has_page = page !== undefined && page !== '';
     const has_limit = limit !== undefined && limit !== '';
     if (!has_page || !has_limit) {
@@ -66,15 +68,15 @@ export class UsersController {
   */
 
   @ApiBearerAuth()
-  @Get(':id') // Tendria que poner algo para que no me traiga la contraseña del usuario
+  @Get(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async get_user_id(
-    @Req() request: Request & { user: any }, // Tendria que estar tipado el user: any
+  get_user_id(
+    @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
-  ) {
+  ): Promise<UsersResponseDto | null> {
     const has_page = page !== undefined && page !== '';
     const has_limit = limit !== undefined && limit !== '';
     if (!has_page || !has_limit) {
@@ -91,10 +93,10 @@ export class UsersController {
   @Put(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async update_user_by_id(
-    @Req() request: Request & { user: any },
+  update_user_by_id(
+    @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: CreateUsersDto,
+    @Body() user: UsersUpdateDto,
   ) {
     return this.usersService.update_user_id(id, user);
   }
@@ -103,8 +105,8 @@ export class UsersController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async delete_user_by_id(
-    @Req() request: Request & { user: any },
+  delete_user_by_id(
+    @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.usersService.delete_user_id(id);

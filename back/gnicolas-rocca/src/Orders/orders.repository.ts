@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Orders } from './orders.entity';
 import { In, MoreThan, Repository } from 'typeorm';
@@ -55,7 +55,9 @@ export class OrdersRepository {
     });
 
     if (found_products.length === 0)
-      throw new Error('No se encontraron productos con stock disponible');
+      throw new BadRequestException(
+        'No se encontraron productos con stock disponible',
+      );
 
     let total = 0;
     for (const product of found_products) {

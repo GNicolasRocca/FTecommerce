@@ -12,6 +12,7 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from '../dtos/CreateOrder.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Users } from 'src/interfaces/user.interface';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -22,7 +23,7 @@ export class OrdersController {
   @Get(':id')
   @UseGuards(AuthGuard)
   get_order(
-    @Req() request: Request & { user: any },
+    @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.ordersService.order(id);
@@ -32,10 +33,9 @@ export class OrdersController {
   @Post()
   @UseGuards(AuthGuard)
   create_order(
-    @Req() request: Request & { user: any },
+    @Req() request: Request & { user: Users },
     @Body() body: CreateOrderDto,
   ) {
-    console.log('Estamos en el controller');
     return this.ordersService.order_creation(body);
   }
 }

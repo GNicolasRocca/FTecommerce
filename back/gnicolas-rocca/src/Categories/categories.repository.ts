@@ -10,15 +10,15 @@ export class CategoriesRepository {
     private readonly categoriesRepository: Repository<Categories>,
   ) {}
 
-  async getCategories(): Promise<Categories[]> {
+  getCategories() {
     return this.categoriesRepository.find();
   }
 
   async add_category(categories: Partial<Categories>[]) {
-    return this.categoriesRepository.save(categories);
+    return await this.categoriesRepository.save(categories);
   }
 
-  async findByName(name: string): Promise<Categories | null> {
+  findByName(name: string): Promise<Categories | null> {
     return this.categoriesRepository.findOne({
       where: { name },
     });

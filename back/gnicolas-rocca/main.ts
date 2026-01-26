@@ -34,4 +34,6 @@ bootstrap();
 
 // Todos los comandos para pushear en la carpeta raiz del proyecto (pm4be...)
 // Extra: Nest Pipes --- ACT 4: Agrega el manejo de errores que creas correspondiente para cada ruta
-// docker-compose down docker-compose up   PARA LEVANTAR DOCKER
+// docker-compose down docker-compose up  <--- PARA LEVANTAR DOCKER
+// Cuando quiero usar docker cambiar DB_HOST a postgresdb
+// Al final cambia el build: . por image: gnicolas03/nest-demo y le trae la BDD pero no se si hace falta modificar el mio o es solo para poder traerme BDD a donde quiera

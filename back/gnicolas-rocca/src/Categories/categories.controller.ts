@@ -9,7 +9,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post('seeder')
-  async seed_categories() {
+  seed_categories() {
     return this.categoriesService.seed();
   }
 

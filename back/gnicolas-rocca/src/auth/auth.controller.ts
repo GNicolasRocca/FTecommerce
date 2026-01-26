@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUsersDto } from 'src/dtos/LoginUsers.dto';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
@@ -10,6 +10,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  @HttpCode(201)
   async singup_to_app(@Body() user: CreateUsersDto) {
     return this.authService.signup_app(user);
   }
@@ -19,7 +20,7 @@ export class AuthController {
     const log = await this.authService.signin_app(body);
 
     if (!body.email || !body.password) {
-      throw new Error('Falta colocar alguno de los datos solicitados');
+      throw new Error('Falta colocar alguna de las credenciales solicitadas');
     }
 
     return log;

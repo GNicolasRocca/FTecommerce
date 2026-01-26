@@ -38,7 +38,6 @@ export class CloudinaryRepository {
         return reject(new Error('Archivo inválido'));
       }
 
-      // La constante uploadStream la muestran en el video
       const uploadStream = cloudinary.uploader.upload_stream(
         { folder: 'products' },
         (error, result) => {
@@ -55,7 +54,6 @@ export class CloudinaryRepository {
       );
 
       Readable.from(file.buffer).pipe(uploadStream);
-      // Los errores que me tira arriba es porque esLint esta en modo strict, los puedo omitir ya que el profe los hizo asi y es un poco problema resolverlo
     });
   }
 }
