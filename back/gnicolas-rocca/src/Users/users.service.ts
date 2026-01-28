@@ -10,17 +10,18 @@ export class UsersService {
 
   private readonly seeder_users: CreateUsersDto[] = [
     {
-      email: 'gonzalo-mail@mail.com',
+      // Admin
+      email: 'gonzalo@mail.com',
       name: 'Gonzalo Lopez',
       password: 'Gonza1234$',
       phone: 1234579944,
       address: 'Av Sarmiento 3419',
       country: 'Argentina',
       city: 'Buenos Aires',
-      is_admin: false,
+      is_admin: true,
     },
     {
-      email: 'roberto-mail@mail.com',
+      email: 'roberto@mail.com',
       name: 'Roberto Rodriguez',
       password: 'Rober1234$',
       phone: 112354445,
@@ -30,7 +31,7 @@ export class UsersService {
       is_admin: false,
     },
     {
-      email: 'ricardo-mail@mail.com',
+      email: 'ricardo@mail.com',
       name: 'Ricardo Guzman',
       password: 'Rick1234$',
       phone: 1123545467,

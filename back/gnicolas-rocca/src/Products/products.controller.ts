@@ -20,6 +20,8 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductResponseDto } from 'src/dtos/ProductResponsedto';
 import { Users } from 'src/Users/users.entity';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/auth/roles.enum';
 
 @ApiTags('Products')
 @Controller('products')
@@ -80,6 +82,7 @@ export class ProductsController {
     return this.productsService.get_product_id(id);
   }
 
+  @Roles(Role.Admin)
   @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard, RolesGuard)

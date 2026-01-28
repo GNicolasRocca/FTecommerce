@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      forbidNonWhitelisted: true,
     }),
   );
 
@@ -27,7 +28,7 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000); // Hacer un .env del puerto
 
   console.log(
-    `Servidor operativo escuchando en puerto: ${process.env.DB_PORT}`, // Fijarse porque no esta escuchando en puerto 5432
+    `Servidor operativo escuchando en puerto: ${process.env.PORT}`, // Fijarse porque no esta escuchando en puerto 5432
   );
 }
 bootstrap();

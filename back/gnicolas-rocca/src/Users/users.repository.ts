@@ -22,7 +22,13 @@ export class UsersRepository {
   ) {}
 
   async save_seeder(users: CreateUsersDto[]): Promise<Users[]> {
-    const entities = this.usersRepository.create(users);
+    const entities = await Promise.all(
+      users.map(async (user) => ({
+        ...user,
+        password: await hash(user.password, 10),
+      })),
+    );
+
     return this.usersRepository.save(entities);
   }
 

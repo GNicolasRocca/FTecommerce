@@ -19,6 +19,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersResponseDto } from 'src/dtos/UsersResponse.dto';
 import { Users } from 'src/interfaces/user.interface';
 import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
+import { Role } from 'src/auth/roles.enum';
+import { Roles } from 'src/auth/roles.decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,12 +28,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   // Con private readonly indicamos solo lectura, no lo podemos modificar
 
-  // esto no va porque se supone que funciona con dtos el plugin de swagger
   @Post('seeder')
   seeder_users() {
     return this.usersService.seeder();
   }
 
+  @Roles(Role.Admin)
   @ApiBearerAuth()
   @Get('/')
   @UseGuards(AuthGuard, RolesGuard)
