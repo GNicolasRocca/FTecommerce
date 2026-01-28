@@ -21,6 +21,7 @@ import { Users } from 'src/interfaces/user.interface';
 import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 import { Role } from 'src/auth/roles.enum';
 import { Roles } from 'src/auth/roles.decorator';
+import { UsersModGuard } from 'src/auth/userMod.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -71,7 +72,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Get(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando pueda
   @HttpCode(200)
   get_user_id(
     @Req() request: Request & { user: Users },
