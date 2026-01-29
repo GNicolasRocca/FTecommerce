@@ -33,6 +33,11 @@ export class Users {
   @Column({ default: false }) // true para probar los metodos que necesitan ser admin
   is_admin: boolean;
 
+  /*
+  @Column({ default: false })
+  is_client: boolean;
+  */
+
   @OneToMany(() => Orders, (order) => order.user)
   orders: Orders[];
 }

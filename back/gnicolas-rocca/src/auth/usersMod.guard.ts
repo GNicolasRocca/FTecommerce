@@ -8,8 +8,6 @@ import { Request } from 'express';
 
 @Injectable()
 export class UsersModGuard implements CanActivate {
-  constructor() {}
-
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
 

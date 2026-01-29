@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-// import { Observable } from 'rxjs';
 import { JwtPayload } from 'src/interfaces/jwtPayload.interface';
 import { JwtService } from '@nestjs/jwt';
 
+/*
 function validateRequest(request: Request) {
   const auth_header = request.headers['authorization'];
 
@@ -27,6 +27,7 @@ function validateRequest(request: Request) {
   // Por ahora solo chequeamos que envie el email y la password
   return true;
 }
+*/
 
 @Injectable()
 export class AuthGuard implements CanActivate {

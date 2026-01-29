@@ -11,3 +11,6 @@ export class Migration1767830809754 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE TEST`);
   }
 }
+// npx typeorm migration:generate src/migrations/TestMigration -d src/config/typeorm.datasource.ts
+// npx typeorm-ts-node-commonjs migration:run -d src/config/typeorm.datasource.ts
+// Esto es para generar migraciones con los cambios hechos en mi db, pero con el syncronize en false

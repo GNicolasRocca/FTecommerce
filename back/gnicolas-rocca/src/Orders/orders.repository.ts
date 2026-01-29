@@ -34,7 +34,7 @@ export class OrdersRepository {
 
   async add_order(body: CreateOrderDto) {
     const { user_id, products } = body;
-    // Poner comentarios de como funciona
+
     const find_user = await this.usersRepository.findOne({
       where: { id: user_id },
     });

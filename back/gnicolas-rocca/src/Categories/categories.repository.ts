@@ -18,7 +18,7 @@ export class CategoriesRepository {
     return await this.categoriesRepository.save(categories);
   }
 
-  findByName(name: string): Promise<Categories | null> {
+  findByName(name: string) {
     return this.categoriesRepository.findOne({
       where: { name },
     });

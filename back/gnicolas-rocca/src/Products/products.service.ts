@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProductsRepository } from './products.repository';
 import * as productInterface from 'src/interfaces/product.interface';
 import { CategoriesRepository } from 'src/Categories/categories.repository';
+import { ProductCreateDto } from 'src/dtos/ProductCreate.dto';
 
 @Injectable({})
 export class ProductsService {
@@ -66,7 +67,7 @@ export class ProductsService {
     return this.productsRepository.get_products();
   }
 
-  async create_product(product: Omit<productInterface.Product, 'id'>) {
+  async create_product(product: ProductCreateDto) {
     const category = await this.categoriesRepository.findByName(
       product.categoryName,
     );

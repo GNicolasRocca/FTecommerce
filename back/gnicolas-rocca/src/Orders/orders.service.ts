@@ -10,7 +10,11 @@ export class OrdersService {
     return this.ordersRepository.get_order(id);
   }
 
-  order_creation(body: CreateOrderDto) {
-    return this.ordersRepository.add_order(body);
+  async order_creation(body: CreateOrderDto) {
+    const result = await this.ordersRepository.add_order(body);
+
+    // await this.usersService.premiumClient(body.user_id);
+
+    return result;
   }
 }

@@ -11,7 +11,8 @@ export class ProductsRepository {
   ) {}
 
   async add_product(product: Partial<Products>) {
-    return this.productsRepository.save(product);
+    const prod = this.productsRepository.create(product);
+    return this.productsRepository.save(prod);
   }
 
   async findByName(name: string) {

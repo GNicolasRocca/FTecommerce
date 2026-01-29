@@ -8,6 +8,7 @@ import { Reflector } from '@nestjs/core';
 // import { Observable } from 'rxjs';
 import { Role } from './roles.enum';
 import { Request } from 'express';
+import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -15,7 +16,7 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     // Busca metadata roles, primero en handler (metodo) y luego en class (controller)
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);

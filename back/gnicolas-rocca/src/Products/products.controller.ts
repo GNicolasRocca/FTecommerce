@@ -22,6 +22,7 @@ import { ProductResponseDto } from 'src/dtos/ProductResponsedto';
 import { Users } from 'src/Users/users.entity';
 import { Roles } from 'src/auth/roles.decorator';
 import { Role } from 'src/auth/roles.enum';
+import { ProductCreateDto } from 'src/dtos/ProductCreate.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -58,7 +59,7 @@ export class ProductsController {
   @Post('create')
   @UseGuards(AuthGuard)
   @HttpCode(201)
-  create_new_product(@Body() product: productInterface.Product) {
+  create_new_product(@Body() product: ProductCreateDto) {
     return this.productsService.create_product(product);
   }
 

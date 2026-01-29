@@ -21,7 +21,7 @@ import { Users } from 'src/interfaces/user.interface';
 import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 import { Role } from 'src/auth/roles.enum';
 import { Roles } from 'src/auth/roles.decorator';
-import { UsersModGuard } from 'src/auth/userMod.guard';
+import { UsersModGuard } from 'src/auth/usersMod.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -68,11 +68,23 @@ export class UsersController {
     console.log(user);
     return this.usersService.new_user(user);
   }
+
+  // Prueba
+  @ApiBearerAuth()
+  @Get('getN')
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  get_user_by_name(
+    @Req() request: Request & { user: Users },
+    @Query('name') name: string,
+  ) {
+    return this.usersService.get_user_name(name);
+  }
   */
 
   @ApiBearerAuth()
   @Get(':id')
-  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando pueda
+  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando quiera probar admmin
   @HttpCode(200)
   get_user_id(
     @Req() request: Request & { user: Users },
@@ -94,7 +106,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando quiera probar admin
   @HttpCode(200)
   update_user_by_id(
     @Req() request: Request & { user: Users },

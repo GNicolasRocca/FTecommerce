@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUsersDto } from 'src/dtos/LoginUsers.dto';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EmailToLowerCasePipe } from 'src/pipes/emailToLowerCase.pipe';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -10,6 +11,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  @UsePipes(EmailToLowerCasePipe)
   @HttpCode(201)
   async singup_to_app(@Body() user: CreateUsersDto) {
     return this.authService.signup_app(user);

@@ -21,6 +21,10 @@ export class UsersRepository {
     private readonly jwtService: JwtService,
   ) {}
 
+  private async hash_password(password: string): Promise<string> {
+    return hash(password, 10);
+  }
+
   async save_seeder(users: CreateUsersDto[]): Promise<Users[]> {
     const entities = await Promise.all(
       users.map(async (user) => ({
@@ -98,10 +102,11 @@ export class UsersRepository {
 
     const user_payload = {
       sub: find_user_email.id,
-      id: find_user_email.id,
+      id: find_user_email.id, // tendria que borrarlo pero fijarme que no cambie nada
       email: find_user_email.email,
       role: find_user_email.is_admin ? Role.Admin : Role.User,
     };
+    // se puede hacer let de role y quedaria mejor
 
     const token = this.jwtService.sign(user_payload);
 
@@ -139,7 +144,16 @@ export class UsersRepository {
       where: { id },
     });
 
-    if (!user_exists) return null;
+    if (!user_exists)
+      throw new BadRequestException(
+        'El usuario que intenta actualizar no existe',
+      );
+
+    if (user.password) {
+      user.password = await this.hash_password(user.password);
+    }
+
+    console.log(user.password);
 
     const update = this.usersRepository.merge(user_exists, user);
 
@@ -166,4 +180,17 @@ export class UsersRepository {
       message: 'Usuario eliminado correctamente',
     };
   }
+
+  /*
+  async get_name(name: string) {
+    const user_name = await this.usersRepository.findOne({
+      where: { name },
+    });
+
+    return {
+      message: 'Funciona',
+      user_name,
+    };
+  }
+  */
 }

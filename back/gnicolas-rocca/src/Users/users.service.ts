@@ -76,4 +76,27 @@ export class UsersService {
     limit = Number(limit);
     console.log('Page es: ', page, ' y Limit es: ', limit);
   }
+
+  /*
+  // Prueba
+  async premiumClient(user_id: string) {
+    const user = await this.usersRepo.findOne({
+      where: { id: user_id },
+      relations: ['orders'],
+    });
+
+    if (!user) throw new BadRequestException('Usuario no encontrado');
+
+    if (user.orders.length > 2) {
+      user.is_premium = true;
+
+      await this.usersRepo.save(user);
+    }
+    console.log(user.is_premium);
+  }
+ 
+  get_user_name(name: string) {
+    return this.usersRepository.get_name(name);
+  }
+  */
 }
