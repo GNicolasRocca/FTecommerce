@@ -94,9 +94,9 @@ export class UsersService {
     }
     console.log(user.is_premium);
   }
- 
+  */
+
   get_user_name(name: string) {
     return this.usersRepository.get_name(name);
   }
-  */
 }

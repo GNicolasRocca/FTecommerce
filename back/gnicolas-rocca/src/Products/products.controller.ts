@@ -32,6 +32,11 @@ export class ProductsController {
     private usersService: UsersService,
   ) {}
 
+  @Get('prodN')
+  get_product_by_name(@Query('name') name: string) {
+    return this.productsService.get_product_name(name);
+  }
+
   @Post('seeder')
   seeder() {
     return this.productsService.seed();

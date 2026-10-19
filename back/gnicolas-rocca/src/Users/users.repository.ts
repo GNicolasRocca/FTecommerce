@@ -181,7 +181,6 @@ export class UsersRepository {
     };
   }
 
-  /*
   async get_name(name: string) {
     const user_name = await this.usersRepository.findOne({
       where: { name },
@@ -192,5 +191,4 @@ export class UsersRepository {
       user_name,
     };
   }
-  */
 }

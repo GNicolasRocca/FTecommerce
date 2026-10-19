@@ -25,16 +25,13 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.use(logger_global_middleware);
-  await app.listen(process.env.PORT ?? 3000); // Hacer un .env del puerto
+  await app.listen(process.env.PORT ?? 3000);
 
-  console.log(
-    `Servidor operativo escuchando en puerto: ${process.env.PORT}`, // Fijarse porque no esta escuchando en puerto 5432
-  );
+  console.log(`Servidor operativo escuchando en puerto: ${process.env.PORT}`);
 }
 bootstrap();
 
 // Todos los comandos para pushear en la carpeta raiz del proyecto (pm4be...)
-// Extra: Nest Pipes --- ACT 4: Agrega el manejo de errores que creas correspondiente para cada ruta
 // docker-compose down docker-compose up  <--- PARA LEVANTAR DOCKER
 // Cuando quiero usar docker cambiar DB_HOST a postgresdb
 // Al final cambia el build: . por image: gnicolas03/nest-demo y le trae la BDD pero no se si hace falta modificar el mio o es solo para poder traerme BDD a donde quiera

@@ -61,17 +61,8 @@ export class UsersController {
     return this.usersService.get_all_users();
   }
 
-  /*
-  @Post('create')
-  @HttpCode(201)
-  async create_user(@Body() user: CreateUsersDto): Promise<userInterface.Users> {
-    console.log(user);
-    return this.usersService.new_user(user);
-  }
-
-  // Prueba
   @ApiBearerAuth()
-  @Get('getN')
+  @Get('name-user')
   @UseGuards(AuthGuard)
   @HttpCode(200)
   get_user_by_name(
@@ -80,7 +71,6 @@ export class UsersController {
   ) {
     return this.usersService.get_user_name(name);
   }
-  */
 
   @ApiBearerAuth()
   @Get(':id')
@@ -106,7 +96,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Put(':id')
-  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando quiera probar admin
+  @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
   update_user_by_id(
     @Req() request: Request & { user: Users },
@@ -118,7 +108,7 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
   delete_user_by_id(
     @Req() request: Request & { user: Users },

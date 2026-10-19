@@ -3,6 +3,7 @@ import { ProductsRepository } from './products.repository';
 import * as productInterface from 'src/interfaces/product.interface';
 import { CategoriesRepository } from 'src/Categories/categories.repository';
 import { ProductCreateDto } from 'src/dtos/ProductCreate.dto';
+import { Products } from './products.entity';
 
 @Injectable({})
 export class ProductsService {
@@ -37,6 +38,12 @@ export class ProductsService {
       categoryName: 'monitor',
     },
   ];
+
+  get_product_name(name: string): Promise<Products> {
+    const prod_get = this.productsRepository.get_name(name);
+
+    return prod_get;
+  }
 
   async seed() {
     for (const product of this.seed_products) {

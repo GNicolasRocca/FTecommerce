@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Products } from './products.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -9,6 +13,16 @@ export class ProductsRepository {
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
   ) {}
+
+  async get_name(name: string): Promise<Products> {
+    const found_product = await this.productsRepository.findOne({
+      where: { name },
+    });
+
+    if (!found_product) throw new BadRequestException('Producto no encontrado');
+
+    return found_product;
+  }
 
   async add_product(product: Partial<Products>) {
     const prod = this.productsRepository.create(product);
@@ -46,7 +60,10 @@ export class ProductsRepository {
       throw new NotFoundException('Producto no encontrado');
     }
 
-    return { succes: true, message: 'Producto eliminado' };
+    return {
+      success: true,
+      message: 'Producto eliminado',
+    };
   }
 
   async get_by_id(id: string) {
