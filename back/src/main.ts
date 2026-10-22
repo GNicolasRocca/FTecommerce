@@ -1,8 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from 'src/app.module';
+import { AppModule } from './app.module';
 import { logger_global_middleware } from 'src/middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,10 +15,8 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Demo Nest')
-    .setDescription(
-      'Esta es una API construida con Nest para el modulo 4 de Henry',
-    )
+    .setTitle('Fix IT Ecommerce')
+    .setDescription('Esta es una API construida con Nest para Fix It Ecommerce')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

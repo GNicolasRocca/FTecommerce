@@ -16,7 +16,9 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.development',
+      envFilePath: process.env.NODE_ENV === 'production'
+      ? []
+      : ['.env.development'],
       load: [typeOrmConfig],
     }),
     TypeOrmModule.forRootAsync({
@@ -40,7 +42,7 @@ import { JwtModule } from '@nestjs/jwt';
     CloudinaryModule,
     JwtModule.register({
       global: true,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '2h' },
       secret: process.env.JWT_SECRET,
     }),
   ],
