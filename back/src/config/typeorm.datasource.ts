@@ -13,6 +13,7 @@ export const AppDataSource = new DataSource({
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/migrations/*.js'],

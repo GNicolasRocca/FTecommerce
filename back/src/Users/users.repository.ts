@@ -7,8 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
-// import * as bcrypt from 'bcrypt';
-import { hash, compare } from 'bcryptjs'; // compare se usa para login
+import { hash, compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from 'src/auth/roles.enum';
 import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
@@ -23,17 +22,6 @@ export class UsersRepository {
 
   private async hash_password(password: string): Promise<string> {
     return hash(password, 10);
-  }
-
-  async save_seeder(users: CreateUsersDto[]): Promise<Users[]> {
-    const entities = await Promise.all(
-      users.map(async (user) => ({
-        ...user,
-        password: await hash(user.password, 10),
-      })),
-    );
-
-    return this.usersRepository.save(entities);
   }
 
   get_users() {
@@ -52,14 +40,6 @@ export class UsersRepository {
       },
     });
   }
-
-  /*
-  async user_create(user: CreateUsersDto) {
-    // Con omit se omite el id de la interface User (aunque ahora cree un DTO que lo omite directamente al id)
-
-    return Promise.resolve(this.usersRepository.save(user));
-  }
-  */
 
   async sing_up(user: CreateUsersDto) {
     const find_email = await this.find_user_email(user.email);

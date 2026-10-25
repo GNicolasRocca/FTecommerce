@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { ApiTags } from '@nestjs/swagger';
 // import * as categoriesInterface from 'src/Interfaces/categories.interface';
@@ -8,13 +8,8 @@ import { ApiTags } from '@nestjs/swagger';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post('seeder')
-  seed_categories() {
-    return this.categoriesService.seed();
-  }
-
   @Get('all')
-  get_all_categories() {
+  async get_all_categories() {
     return this.categoriesService.getCategories();
   }
 

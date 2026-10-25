@@ -10,8 +10,8 @@ export class CategoriesRepository {
     private readonly categoriesRepository: Repository<Categories>,
   ) {}
 
-  getCategories() {
-    return this.categoriesRepository.find();
+  async getCategories() {
+    return await this.categoriesRepository.find();
   }
 
   async add_category(categories: Partial<Categories>[]) {

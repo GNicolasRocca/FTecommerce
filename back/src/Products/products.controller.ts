@@ -37,11 +37,6 @@ export class ProductsController {
     return this.productsService.get_product_name(name);
   }
 
-  @Post('seeder')
-  seeder() {
-    return this.productsService.seed();
-  }
-
   @Get('/')
   @HttpCode(200)
   get_products(

@@ -12,65 +12,13 @@ export class ProductsService {
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
 
-  private readonly seed_products = [
-    {
-      name: 'Samsung Galaxy S23',
-      description: 'The best smartphone in the world',
-      price: 150,
-      stock: 4,
-      imgUrl: 'imagen de samsung S23',
-      categoryName: 'smartphone',
-    },
-    {
-      name: 'Razer BlackWidow V3',
-      description: 'The best keyboard in the world',
-      price: 100,
-      stock: 5,
-      imgUrl: 'Imagen de teclado Razer',
-      categoryName: 'keyboard',
-    },
-    {
-      name: 'Samsung Odyssey G9',
-      description: 'The best monitor in the world',
-      price: 300,
-      stock: 4,
-      imgUrl: 'Imagen de monitor',
-      categoryName: 'monitor',
-    },
-  ];
-
-  get_product_name(name: string): Promise<Products> {
-    const prod_get = this.productsRepository.get_name(name);
+  async get_product_name(name: string): Promise<Products> {
+    const prod_get = await this.productsRepository.get_name(name);
 
     return prod_get;
   }
 
-  async seed() {
-    for (const product of this.seed_products) {
-      const exists = await this.productsRepository.findByName(product.name);
-      if (exists) continue;
-
-      const category = await this.categoriesRepository.findByName(
-        product.categoryName,
-      );
-
-      if (!category) {
-        throw new Error(`Category ${product.categoryName} no encontrada`);
-      }
-
-      await this.productsRepository.add_product({
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        stock: product.stock,
-        category,
-      });
-    }
-
-    return { message: 'Seeder de productos ejecutado correctamente' };
-  }
-
-  get_all_products() {
+  async get_all_products() {
     return this.productsRepository.get_products();
   }
 

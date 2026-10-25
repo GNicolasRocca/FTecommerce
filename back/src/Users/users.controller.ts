@@ -6,7 +6,6 @@ import {
   HttpCode,
   Param,
   ParseUUIDPipe,
-  Post,
   Put,
   Query,
   Req,
@@ -27,12 +26,6 @@ import { UsersModGuard } from 'src/auth/usersMod.guard';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  // Con private readonly indicamos solo lectura, no lo podemos modificar
-
-  @Post('seeder')
-  seeder_users() {
-    return this.usersService.seeder();
-  }
 
   @Roles(Role.Admin)
   @ApiBearerAuth()
@@ -53,11 +46,6 @@ export class UsersController {
       );
     }
 
-    console.log(
-      'Log para saber si le paso el query param me lo asiga bien',
-      page,
-      limit,
-    );
     return this.usersService.get_all_users();
   }
 
