@@ -6,7 +6,7 @@ import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
-  get_all_users() {
+  async get_all_users() {
     return this.usersRepository.get_users();
   }
 

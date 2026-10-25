@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -66,12 +65,4 @@ export class CreateUsersDto {
   @IsString()
   @Length(5, 20)
   city: string;
-
-  @IsEmpty()
-  @ApiProperty({
-    description:
-      'Esta propiedad no es asignada por el usuario y por default es false',
-    default: 'false',
-  })
-  is_admin: boolean;
 }

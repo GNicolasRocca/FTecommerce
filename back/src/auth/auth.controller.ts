@@ -19,12 +19,12 @@ export class AuthController {
 
   @Post('signin')
   async signin_to_app(@Body() body: LoginUsersDto) {
-    const log = await this.authService.signin_app(body);
+    const log_in = await this.authService.signin_app(body);
 
     if (!body.email || !body.password) {
       throw new Error('Falta colocar alguna de las credenciales solicitadas');
     }
 
-    return log;
+    return log_in;
   }
 }

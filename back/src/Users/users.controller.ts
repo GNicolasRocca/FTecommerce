@@ -32,7 +32,7 @@ export class UsersController {
   @Get('/')
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
-  get_users(
+  async get_users(
     @Req() request: Request & { user: Users },
     @Query('page') page?: string,
     @Query('limit') limit?: string,

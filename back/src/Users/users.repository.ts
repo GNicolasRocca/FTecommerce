@@ -1,15 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './users.entity';
 import { Repository } from 'typeorm';
 import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
-import { hash, compare } from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
-import { Role } from 'src/auth/roles.enum';
+import { hash } from 'bcryptjs';
 import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
 
 @Injectable({})
@@ -17,15 +11,28 @@ export class UsersRepository {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
-    private readonly jwtService: JwtService,
   ) {}
 
   private async hash_password(password: string): Promise<string> {
     return hash(password, 10);
+  } // Esto no es necesario creo, chequear
+
+  async sing_up(user: CreateUsersDto): Promise<Users> {
+    const new_user = this.usersRepository.create({
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      phone: user.phone,
+      address: user.address,
+      country: user.country,
+      city: user.city,
+    });
+
+    return await this.usersRepository.save(new_user);
   }
 
-  get_users() {
-    return this.usersRepository.find({
+  async get_users() {
+    return await this.usersRepository.find({
       relations: ['orders'],
       select: {
         id: true,
@@ -39,62 +46,6 @@ export class UsersRepository {
         orders: true,
       },
     });
-  }
-
-  async sing_up(user: CreateUsersDto) {
-    const find_email = await this.find_user_email(user.email);
-
-    if (find_email)
-      throw new BadRequestException(
-        'El email ingresado ya esta enlazado a una cuenta',
-      );
-
-    const hashed_password = await hash(user.password, 10);
-    if (!hashed_password)
-      throw new BadRequestException('La contraseña no pudo ser hasheada');
-
-    // Guardar el usuario en la BDD
-    const user_create = await this.usersRepository.save({
-      ...user,
-      password: hashed_password,
-    });
-
-    // Mostrar usuario sin la contraseña
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user_create;
-
-    return result;
-  }
-
-  async sign_in(email: string, password: string) {
-    const find_user_email = await this.usersRepository.findOne({
-      where: { email },
-    });
-
-    if (!find_user_email) {
-      throw new UnauthorizedException('Email o contraseña incorrecta');
-    }
-
-    const valid_password = await compare(password, find_user_email.password);
-
-    if (!valid_password)
-      throw new UnauthorizedException('Email o contraseña incorrecta');
-
-    const user_payload = {
-      sub: find_user_email.id,
-      id: find_user_email.id, // tendria que borrarlo pero fijarme que no cambie nada
-      email: find_user_email.email,
-      role: find_user_email.is_admin ? Role.Admin : Role.User,
-    };
-    // se puede hacer let de role y quedaria mejor
-
-    const token = this.jwtService.sign(user_payload);
-
-    return {
-      message: 'Usuario logueado correctamente',
-      user_id: find_user_email.id,
-      token,
-    };
   }
 
   find_user_email(email: string) {
@@ -132,8 +83,6 @@ export class UsersRepository {
     if (user.password) {
       user.password = await this.hash_password(user.password);
     }
-
-    console.log(user.password);
 
     const update = this.usersRepository.merge(user_exists, user);
 

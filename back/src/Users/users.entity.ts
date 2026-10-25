@@ -30,7 +30,7 @@ export class Users {
   @Column('varchar', { length: 50 })
   city: string;
 
-  @Column({ default: false }) // true para probar los metodos que necesitan ser admin
+  @Column({ default: false })
   is_admin: boolean;
 
   /*
