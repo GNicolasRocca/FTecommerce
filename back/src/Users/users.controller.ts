@@ -50,21 +50,21 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Get('name-user')
-  @UseGuards(AuthGuard)
+  @Get('user-email')
+  @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
-  get_user_by_name(
+  async get_user_by_name(
     @Req() request: Request & { user: Users },
-    @Query('name') name: string,
+    @Query('email') email: string,
   ) {
-    return this.usersService.get_user_name(name);
+    return this.usersService.get_user_by_email_admin(email);
   }
 
   @ApiBearerAuth()
   @Get(':id')
-  @UseGuards(AuthGuard, UsersModGuard) // UsersModGuard sacarlo cuando quiera probar admmin
+  @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
-  get_user_id(
+  async get_user_id(
     @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
     @Query('page') page?: string,
@@ -86,7 +86,7 @@ export class UsersController {
   @Put(':id')
   @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
-  update_user_by_id(
+  async update_user_by_id(
     @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: UsersUpdateDto,
@@ -98,7 +98,7 @@ export class UsersController {
   @Delete(':id')
   @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
-  delete_user_by_id(
+  async delete_user_by_id(
     @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
   ) {

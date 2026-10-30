@@ -31,7 +31,7 @@ export class UsersRepository {
     return await this.usersRepository.save(new_user);
   }
 
-  async get_users() {
+  async get_users(): Promise<Users[]> {
     return await this.usersRepository.find({
       relations: ['orders'],
       select: {
@@ -48,13 +48,26 @@ export class UsersRepository {
     });
   }
 
-  find_user_email(email: string) {
-    return this.usersRepository.findOne({ where: { email } });
-  }
-
-  get_id(id: string) {
+  async get_id(id: string): Promise<Users | null> {
     return this.usersRepository.findOne({
       where: { id },
+      relations: ['orders'],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        country: true,
+        city: true,
+        orders: true,
+      },
+    });
+  }
+
+  async find_user_email(email: string): Promise<Users | null> {
+    return this.usersRepository.findOne({
+      where: { email },
       relations: ['orders'],
       select: {
         id: true,
@@ -107,17 +120,6 @@ export class UsersRepository {
     return {
       success: true,
       message: 'Usuario eliminado correctamente',
-    };
-  }
-
-  async get_name(name: string) {
-    const user_name = await this.usersRepository.findOne({
-      where: { name },
-    });
-
-    return {
-      message: 'Funciona',
-      user_name,
     };
   }
 }

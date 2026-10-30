@@ -10,15 +10,19 @@ export class UsersService {
     return this.usersRepository.get_users();
   }
 
-  get_user_by_id(id: string) {
+  async get_user_by_id(id: string) {
     return this.usersRepository.get_id(id);
   }
 
-  update_user_id(id: string, user: UsersUpdateDto) {
+  async get_user_by_email_admin(email: string) {
+    return this.usersRepository.find_user_email(email);
+  }
+
+  async update_user_id(id: string, user: UsersUpdateDto) {
     return this.usersRepository.update_user(id, user);
   }
 
-  delete_user_id(id: string) {
+  async delete_user_id(id: string) {
     return this.usersRepository.delete_user(id);
   }
 
@@ -48,8 +52,4 @@ export class UsersService {
     console.log(user.is_premium);
   }
   */
-
-  get_user_name(name: string) {
-    return this.usersRepository.get_name(name);
-  }
 }
