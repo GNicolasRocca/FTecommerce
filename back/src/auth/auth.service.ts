@@ -59,6 +59,11 @@ export class AuthService {
     if (!valid_password)
       throw new UnauthorizedException('Email o contraseña incorrecta');
 
+    if (find_email.is_active === false)
+      throw new BadRequestException(
+        'La cuenta que quiere iniciar sesión fue eliminado',
+      );
+
     const user_payload = {
       sub: find_email.id,
       role: find_email.is_admin ? Role.Admin : Role.User,

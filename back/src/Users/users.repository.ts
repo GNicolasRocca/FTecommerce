@@ -28,6 +28,7 @@ export class UsersRepository {
       city: user.city,
     });
 
+    // Ver si cambiarlo y filtrar la info que pasa al service auth
     return await this.usersRepository.save(new_user);
   }
 
@@ -43,23 +44,6 @@ export class UsersRepository {
         country: true,
         city: true,
         is_admin: true,
-        orders: true,
-      },
-    });
-  }
-
-  async get_id(id: string): Promise<Users | null> {
-    return this.usersRepository.findOne({
-      where: { id },
-      relations: ['orders'],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        address: true,
-        country: true,
-        city: true,
         orders: true,
       },
     });
@@ -82,8 +66,24 @@ export class UsersRepository {
     });
   }
 
+  async get_id(id: string): Promise<Users | null> {
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: ['orders'],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        country: true,
+        city: true,
+        orders: true,
+      },
+    });
+  }
+
   async update_user(id: string, user: UsersUpdateDto) {
-    // Partial permite actualizar solo los campos enviados
     const user_exists = await this.usersRepository.findOne({
       where: { id },
     });
@@ -98,9 +98,7 @@ export class UsersRepository {
     }
 
     const update = this.usersRepository.merge(user_exists, user);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const update_save = await this.usersRepository.save(update);
+    await this.usersRepository.save(update);
 
     return {
       success: true,
@@ -113,9 +111,12 @@ export class UsersRepository {
       where: { id },
     });
 
-    if (!user_exists) return false;
+    if (!user_exists)
+      throw new BadRequestException(
+        'El usuario que intenta eliminar no existe',
+      );
 
-    await this.usersRepository.delete(id);
+    await this.usersRepository.update({ id }, { is_active: false });
 
     return {
       success: true,

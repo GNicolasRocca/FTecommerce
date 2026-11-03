@@ -10,12 +10,12 @@ export class UsersService {
     return this.usersRepository.get_users();
   }
 
-  async get_user_by_id(id: string) {
-    return this.usersRepository.get_id(id);
-  }
-
   async get_user_by_email_admin(email: string) {
     return this.usersRepository.find_user_email(email);
+  }
+
+  async get_user_by_id(id: string) {
+    return this.usersRepository.get_id(id);
   }
 
   async update_user_id(id: string, user: UsersUpdateDto) {

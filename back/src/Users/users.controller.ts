@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   Param,
@@ -49,7 +48,7 @@ export class UsersController {
     return this.usersService.get_all_users();
   }
 
-  @ApiBearerAuth()
+  @ApiBearerAuth(Role.Admin)
   @Get('user-email')
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
@@ -86,22 +85,26 @@ export class UsersController {
   @Put(':id')
   @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
-  async update_user_by_id(
-    @Req() request: Request & { user: Users },
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: UsersUpdateDto,
-  ) {
-    return this.usersService.update_user_id(id, user);
-  }
-
-  @ApiBearerAuth()
-  @Delete(':id')
-  @UseGuards(AuthGuard, UsersModGuard)
-  @HttpCode(200)
   async delete_user_by_id(
     @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.usersService.delete_user_id(id);
   }
+
+  // AGREGAR ENDPOINT ADMIN EDIT 'edit/:id'
+
+  @ApiBearerAuth()
+  @Put('delete')
+  @UseGuards(AuthGuard, UsersModGuard)
+  @HttpCode(200)
+  async update_user_by_id(
+    @Req() request: Request & { user: Users },
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: UsersUpdateDto,
+  ) {
+    return this.usersService.update_user_id(request.user.id, user);
+  }
+
+  // AGREGAR ENDPOINT ADMIN DELETE 'delete/:id'
 }

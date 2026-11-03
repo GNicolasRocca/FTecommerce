@@ -33,10 +33,8 @@ export class Users {
   @Column({ default: false })
   is_admin: boolean;
 
-  /*
-  @Column({ default: false })
-  is_client: boolean;
-  */
+  @Column({ default: true })
+  is_active: boolean;
 
   @OneToMany(() => Orders, (order) => order.user)
   orders: Orders[];
