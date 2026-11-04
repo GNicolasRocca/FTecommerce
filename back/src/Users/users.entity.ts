@@ -15,7 +15,7 @@ export class Users {
   @Column('varchar', { length: 50, unique: true, nullable: false })
   email: string;
 
-  @Column('varchar', { length: 255, nullable: false }) // Lo tuve que cambiar porque al encriptar queda mas larga la contraseña
+  @Column('varchar', { length: 255, nullable: false })
   password: string;
 
   @Column('int')

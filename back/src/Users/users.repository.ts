@@ -90,7 +90,12 @@ export class UsersRepository {
 
     if (!user_exists)
       throw new BadRequestException(
-        'El usuario que intenta actualizar no existe',
+        'El usuario que intenta actualizar no existe o fue eliminado',
+      );
+
+    if (user_exists.is_admin === false)
+      throw new BadRequestException(
+        'El usuario que intenta actualizar no existe o fue eliminado',
       );
 
     if (user.password) {
@@ -114,6 +119,11 @@ export class UsersRepository {
     if (!user_exists)
       throw new BadRequestException(
         'El usuario que intenta eliminar no existe',
+      );
+
+    if (user_exists.is_active === false)
+      throw new BadRequestException(
+        'El usuario que intenta eliminar ya fue eliminado',
       );
 
     await this.usersRepository.update({ id }, { is_active: false });
