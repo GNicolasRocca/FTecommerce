@@ -4,8 +4,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
-import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
-import { LoginUsersDto } from 'src/dtos/LoginUsers.dto';
+import { CreateUsersDto } from 'src/Users/dto/CreateUsers.dto';
+import { LoginUsersDto } from 'src/auth/dto/LoginAuth.dto';
 import { UsersRepository } from 'src/Users/users.repository';
 import { Role } from './roles.enum';
 import { JwtService } from '@nestjs/jwt';

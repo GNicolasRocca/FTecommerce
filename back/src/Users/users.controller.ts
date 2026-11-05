@@ -14,13 +14,13 @@ import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UsersResponseDto } from 'src/dtos/UsersResponse.dto';
 import { Users } from 'src/interfaces/user.interface';
-import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
+import { UsersUpdateDto } from 'src/Users/dto/UsersUpdate.dto';
 import { Role } from 'src/auth/roles.enum';
 import { Roles } from 'src/auth/roles.decorator';
 import { UsersModGuard } from 'src/auth/usersMod.guard';
-import { UsersUpdateAdminDto } from 'src/dtos/UsersUpdateAdmin.dto';
+import { AdminUsersUpdateDto } from 'src/Users/dto/AdminUsersUpdate.dto';
+import { UsersResponseDto } from 'src/Users/dto/UsersResponse.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -33,20 +33,13 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
   async get_users(
-    @Req() request: Request & { user: Users },
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ): Promise<UsersResponseDto[]> {
-    const has_page = page !== undefined && page !== '';
-    const has_limit = limit !== undefined && limit !== '';
-    if (!has_page || !has_limit) {
-      this.usersService.no_params(
-        page ? Number(page) : undefined,
-        limit ? Number(limit) : undefined,
-      );
-    }
-
-    return await this.usersService.get_all_users();
+    return this.usersService.get_all_users(
+      page ? Number(page) : undefined,
+      limit ? Number(limit) : undefined,
+    );
   }
 
   @ApiBearerAuth(Role.Admin)
@@ -54,9 +47,8 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
   async get_user_by_name(
-    // @Req() request: Request & { user: Users }, creo que no hace falta esto chequear
     @Query('email') email: string,
-  ) {
+  ): Promise<UsersResponseDto | null> {
     return this.usersService.get_user_by_email_admin(email);
   }
 
@@ -66,7 +58,7 @@ export class UsersController {
   @HttpCode(200)
   async get_user_by_id(
     @Req() request: Request & { user: Users },
-  ): Promise<Users | null> {
+  ): Promise<UsersResponseDto | null> {
     return await this.usersService.get_user_by_id(request.user.id);
   }
 
@@ -75,10 +67,9 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
   async get_user_id_admin(
-    @Req() request: Request & { user: Users },
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<Users | null> {
-    return await this.usersService.get_user_by_id(id);
+  ): Promise<UsersResponseDto | null> {
+    return this.usersService.get_user_by_id(id);
   }
 
   @ApiBearerAuth()
@@ -88,8 +79,10 @@ export class UsersController {
   async update_user_by_id(
     @Req() request: Request & { user: Users },
     @Body() user: UsersUpdateDto,
-  ) {
-    // ver que promesa iria
+  ): Promise<{
+    success: boolean;
+    message: string;
+  }> {
     // Deberia ir una verificacion por mail
     return await this.usersService.update_user_id(request.user.id, user);
   }
@@ -100,9 +93,11 @@ export class UsersController {
   @HttpCode(200)
   async update_user_admin(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() user: UsersUpdateAdminDto,
-  ) {
-    // ver que promesa iria
+    @Body() user: AdminUsersUpdateDto,
+  ): Promise<{
+    success: boolean;
+    message: string;
+  }> {
     return await this.usersService.update_user_id(id, user);
   }
 
@@ -110,7 +105,10 @@ export class UsersController {
   @Put('delete')
   @UseGuards(AuthGuard, UsersModGuard)
   @HttpCode(200)
-  async delete_user_by_id(@Req() request: Request & { user: Users }) {
+  async delete_user_by_id(@Req() request: Request & { user: Users }): Promise<{
+    success: boolean;
+    message: string;
+  }> {
     return await this.usersService.delete_user_id(request.user.id);
   }
 
@@ -118,10 +116,10 @@ export class UsersController {
   @Put('delete/:id')
   @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
-  async delete_user_admin(
-    @Req() request: Request & { user: Users },
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  async delete_user_admin(@Param('id', ParseUUIDPipe) id: string): Promise<{
+    success: boolean;
+    message: string;
+  }> {
     return await this.usersService.delete_user_id(id);
   }
 }

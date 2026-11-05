@@ -22,7 +22,7 @@ import { ProductResponseDto } from 'src/dtos/ProductResponsedto';
 import { Users } from 'src/Users/users.entity';
 import { Roles } from 'src/auth/roles.decorator';
 import { Role } from 'src/auth/roles.enum';
-import { ProductCreateDto } from 'src/dtos/ProductCreate.dto';
+import { ProductCreateDto } from 'src/Products/dto/ProductCreate.dto';
 
 @ApiTags('Products')
 @Controller('products')

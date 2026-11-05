@@ -8,7 +8,7 @@ export class LoginUsersDto {
     description: 'El email debe ser un email válido',
     example: 'gonzalo@mail.com',
   })
-  email: string;
+  email!: string;
 
   @IsString()
   @IsStrongPassword({
@@ -23,5 +23,5 @@ export class LoginUsersDto {
       'La contraseña debe tener al menos 1 una minuscula, una máyuscula, un número y un cáracter. Y al menos entre 8 y 15 cáracteres de largo',
     example: 'Gonzalo1234$',
   })
-  password: string;
+  password!: string;
 }

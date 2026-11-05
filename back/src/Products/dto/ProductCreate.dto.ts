@@ -2,17 +2,17 @@ import { IsString, IsNumber, IsInt } from 'class-validator';
 
 export class ProductCreateDto {
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  description: string;
+  description!: string;
 
   @IsNumber()
-  price: number;
+  price!: number;
 
   @IsInt()
-  stock: number;
+  stock!: number;
 
   @IsString()
-  categoryName: string;
+  categoryName!: string;
 }

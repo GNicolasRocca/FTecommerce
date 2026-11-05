@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginUsersDto } from 'src/dtos/LoginUsers.dto';
-import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
+import { LoginUsersDto } from 'src/auth/dto/LoginAuth.dto';
+import { CreateUsersDto } from 'src/Users/dto/CreateUsers.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EmailToLowerCasePipe } from 'src/pipes/emailToLowerCase.pipe';
 

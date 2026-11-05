@@ -2,9 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './users.entity';
 import { Repository } from 'typeorm';
-import { CreateUsersDto } from 'src/dtos/CreateUsers.dto';
+import { CreateUsersDto } from 'src/Users/dto/CreateUsers.dto';
 import { hash } from 'bcryptjs';
-import { UsersUpdateDto } from 'src/dtos/UsersUpdate.dto';
+import { UsersUpdateDto } from 'src/Users/dto/UsersUpdate.dto';
+import { UsersResponseDto } from 'src/Users/dto/UsersResponse.dto';
 
 @Injectable({})
 export class UsersRepository {
@@ -32,8 +33,28 @@ export class UsersRepository {
     return await this.usersRepository.save(new_user);
   }
 
-  async get_users(): Promise<Users[]> {
-    return await this.usersRepository.find({
+  async get_users(page: number, limit: number): Promise<UsersResponseDto[]> {
+    return this.usersRepository.find({
+      relations: ['orders'],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        country: true,
+        city: true,
+        is_admin: true,
+        orders: true,
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+  }
+
+  async find_user_email(email: string): Promise<UsersResponseDto | null> {
+    return this.usersRepository.findOne({
+      where: { email },
       relations: ['orders'],
       select: {
         id: true,
@@ -49,24 +70,7 @@ export class UsersRepository {
     });
   }
 
-  async find_user_email(email: string): Promise<Users | null> {
-    return this.usersRepository.findOne({
-      where: { email },
-      relations: ['orders'],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        address: true,
-        country: true,
-        city: true,
-        orders: true,
-      },
-    });
-  }
-
-  async get_id(id: string): Promise<Users | null> {
+  async get_id(id: string): Promise<UsersResponseDto | null> {
     return this.usersRepository.findOne({
       where: { id },
       relations: ['orders'],
@@ -103,15 +107,13 @@ export class UsersRepository {
     }
 
     const update = this.usersRepository.merge(user_exists, user);
-    await this.usersRepository.save(update);
-
-    return {
-      success: true,
-      message: 'Usuario actualizado correctamente',
-    };
+    return await this.usersRepository.save(update);
   }
 
-  async delete_user(id: string) {
+  async delete_user(id: string): Promise<{
+    success: boolean;
+    message: string;
+  }> {
     const user_exists = await this.usersRepository.findOne({
       where: { id },
     });

@@ -5,10 +5,10 @@ export class CategoryResponseDto {
   @IsUUID()
   @IsNotEmpty()
   @ApiProperty({ format: 'uuid' })
-  id: string;
+  id!: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ example: 'Electrónica' })
-  name: string;
+  name!: string;
 }

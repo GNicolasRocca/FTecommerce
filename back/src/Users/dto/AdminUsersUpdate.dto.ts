@@ -1,6 +1,6 @@
 import { IsString, MinLength, IsOptional, IsNumber } from 'class-validator';
 
-export class UsersUpdateAdminDto {
+export class AdminUsersUpdateDto {
   @IsOptional()
   @IsString()
   @MinLength(3)

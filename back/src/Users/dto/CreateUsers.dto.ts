@@ -16,7 +16,7 @@ export class CreateUsersDto {
     description: 'El nombre debe ser entre 3 y 80 cáracteres máximo de largo',
     example: 'Gonzalo',
   })
-  name: string;
+  name!: string;
 
   @IsString()
   @IsEmail()
@@ -24,7 +24,7 @@ export class CreateUsersDto {
     description: 'El email debe ser un email válido',
     example: 'gonzalo@mail.com',
   })
-  email: string;
+  email!: string;
 
   @IsString()
   @IsStrongPassword({
@@ -39,7 +39,7 @@ export class CreateUsersDto {
       'La contraseña debe tener al menos 1 una minuscula, una máyuscula, un número y un cáracter. Y al menos entre 8 y 15 cáracteres de largo',
     example: 'Gonzalo1234$',
   })
-  password: string;
+  password!: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -47,22 +47,22 @@ export class CreateUsersDto {
     description: 'El número de télefono debe ser uno válido',
     example: '1145789466',
   })
-  phone: number;
+  phone!: number;
 
   @IsString()
   @ApiProperty({
     example: 'Avenida Siempre Viva 1435',
   })
-  address: string;
+  address!: string;
 
   @IsString()
   @Length(5, 20)
   @ApiProperty({
     description: 'Debe ser de largo entre 5 y 20 cáracteres máximo',
   })
-  country: string;
+  country!: string;
 
   @IsString()
   @Length(5, 20)
-  city: string;
+  city!: string;
 }

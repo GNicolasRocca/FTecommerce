@@ -13,13 +13,13 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsUUID()
   @ApiProperty({ example: 'uuid' })
-  user_id: string;
+  user_id!: string;
 
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested()
   @Type(() => OrderProductDto)
-  products: OrderProductDto[];
+  products!: OrderProductDto[];
 }
 
 // @IsArray()
