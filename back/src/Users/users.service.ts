@@ -14,17 +14,82 @@ export class UsersService {
   ): Promise<UsersResponseDto[]> {
     const params = this.no_params(page, limit);
 
-    return await this.usersRepository.get_users(params.page, params.limit);
+    const users = await this.usersRepository.get_users(
+      params.page,
+      params.limit,
+    );
+
+    return users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      country: user.country,
+      city: user.city,
+      is_admin: user.is_admin,
+      is_active: user.is_active,
+      orders: user.orders.map((order) => ({
+        id: order.id,
+        date: order.date,
+        user: order.user,
+        orderDetails: order.orderDetails,
+      })),
+    }));
   }
 
   async get_user_by_email_admin(
     email: string,
   ): Promise<UsersResponseDto | null> {
-    return this.usersRepository.find_user_email(email);
+    const user = await this.usersRepository.find_user_email(email);
+
+    if (user === null) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      country: user.country,
+      city: user.city,
+      is_admin: user.is_admin,
+      is_active: user.is_active,
+      orders: user.orders.map((order) => ({
+        id: order.id,
+        date: order.date,
+        user: order.user,
+        orderDetails: order.orderDetails,
+      })),
+    };
   }
 
   async get_user_by_id(id: string): Promise<UsersResponseDto | null> {
-    return this.usersRepository.get_id(id);
+    const user = await this.usersRepository.get_id(id);
+
+    if (user === null) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      country: user.country,
+      city: user.city,
+      is_admin: user.is_admin,
+      is_active: user.is_active,
+      orders: user.orders.map((order) => ({
+        id: order.id,
+        date: order.date,
+        user: order.user,
+        orderDetails: order.orderDetails,
+      })),
+    };
   }
 
   async update_user_id(

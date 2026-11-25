@@ -14,11 +14,9 @@ import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Users } from 'src/interfaces/user.interface';
 import { UsersUpdateDto } from 'src/Users/dto/UsersUpdate.dto';
 import { Role } from 'src/auth/roles.enum';
 import { Roles } from 'src/auth/roles.decorator';
-import { UsersModGuard } from 'src/auth/usersMod.guard';
 import { AdminUsersUpdateDto } from 'src/Users/dto/AdminUsersUpdate.dto';
 import { UsersResponseDto } from 'src/Users/dto/UsersResponse.dto';
 
@@ -44,7 +42,7 @@ export class UsersController {
 
   @ApiBearerAuth(Role.Admin)
   @Get('user-email')
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   async get_user_by_name(
     @Query('email') email: string,
@@ -54,12 +52,13 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Get('my-profile')
-  @UseGuards(AuthGuard, UsersModGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   async get_user_by_id(
-    @Req() request: Request & { user: Users },
+    @Req() request: Request & { user: { sub: string; role: Role } },
   ): Promise<UsersResponseDto | null> {
-    return await this.usersService.get_user_by_id(request.user.id);
+    console.log('Id de usuario: ', request.user.sub);
+    return await this.usersService.get_user_by_id(request.user.sub);
   }
 
   @ApiBearerAuth(Role.Admin)
@@ -74,17 +73,17 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Put('update')
-  @UseGuards(AuthGuard, UsersModGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   async update_user_by_id(
-    @Req() request: Request & { user: Users },
+    @Req() request: Request & { user: { sub: string; role: Role } },
     @Body() user: UsersUpdateDto,
   ): Promise<{
     success: boolean;
     message: string;
   }> {
     // Deberia ir una verificacion por mail
-    return await this.usersService.update_user_id(request.user.id, user);
+    return await this.usersService.update_user_id(request.user.sub, user);
   }
 
   @ApiBearerAuth(Role.Admin)
@@ -103,13 +102,15 @@ export class UsersController {
 
   @ApiBearerAuth()
   @Put('delete')
-  @UseGuards(AuthGuard, UsersModGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(200)
-  async delete_user_by_id(@Req() request: Request & { user: Users }): Promise<{
+  async delete_user_by_id(
+    @Req() request: Request & { user: { sub: string; role: Role } },
+  ): Promise<{
     success: boolean;
     message: string;
   }> {
-    return await this.usersService.delete_user_id(request.user.id);
+    return await this.usersService.delete_user_id(request.user.sub);
   }
 
   @ApiBearerAuth(Role.Admin)

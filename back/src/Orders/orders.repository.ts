@@ -5,7 +5,8 @@ import { In, MoreThan, Repository } from 'typeorm';
 import { Products } from 'src/Products/products.entity';
 import { Users } from 'src/Users/users.entity';
 import { OrderDetails } from 'src/OrderDetails/orderDetails.entity';
-import { CreateOrderDto } from 'src/dtos/CreateOrder.dto';
+import { CreateOrderDto } from './dto/CreateOrder.dto';
+import { UsersRepository } from 'src/Users/users.repository';
 
 @Injectable()
 export class OrdersRepository {
@@ -13,11 +14,11 @@ export class OrdersRepository {
     @InjectRepository(Orders)
     private readonly ordersRepository: Repository<Orders>,
 
+    private readonly usersRepository: UsersRepository,
+
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
 
-    @InjectRepository(Users)
-    private readonly usersRepository: Repository<Users>,
 
     @InjectRepository(OrderDetails)
     private readonly orderDetailsRepository: Repository<OrderDetails>,
@@ -35,15 +36,7 @@ export class OrdersRepository {
   async add_order(body: CreateOrderDto) {
     const { user_id, products } = body;
 
-    const find_user = await this.usersRepository.findOne({
-      where: { id: user_id },
-    });
-
-    if (!find_user)
-      return {
-        success: false,
-        message: 'Usuario no encontrado',
-      };
+    const find_user = await UsersRepository.
 
     const products_id = products.map((p) => p.id);
 

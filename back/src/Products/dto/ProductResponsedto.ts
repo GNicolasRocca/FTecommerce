@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
-import { CategoryResponseDto } from '../Categories/dto/CategoryResponse.dto';
+import { CategoryResponseDto } from 'src/Categories/dto/CategoryResponse.dto';
 
 export class ProductResponseDto {
   @IsUUID()

@@ -8,7 +8,7 @@ import {
   IsUUID,
   Length,
 } from 'class-validator';
-import { Orders } from 'src/Orders/orders.entity';
+import { OrderResponseDto } from 'src/Orders/dto/OrderResponse.dto';
 
 // fijarse de cambiar los nombres de las clases por singular (tambien de otros dto)
 export class UsersResponseDto {
@@ -42,6 +42,10 @@ export class UsersResponseDto {
   @IsBoolean()
   is_admin!: boolean;
 
+  @IsNotEmpty()
+  @IsBoolean()
+  is_active!: boolean;
+
   @IsArray()
-  orders!: Orders[];
+  orders!: OrderResponseDto[];
 }

@@ -8,20 +8,21 @@ export default registerAs('typeorm', (): TypeOrmModuleOptions => {
     type: 'postgres',
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
+    port: Number(process.env.DB_PORT ?? 5432),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
 
-    autoLoadEntities: false,
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 
-    synchronize: !isProduction,
+    synchronize: false,
     dropSchema: false,
     logging: !isProduction,
 
-    entities: [__dirname + '/../**/*.entity{.ts,.js}'], // Segun chatgpt es mejor tener en cada module la referencia para que "mas limpio"
-    migrations: ['dist/migrations/*{.js,.ts}'],
+    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   };
 });
+
 // entities: [__dirname + '/../**/*.entity{.ts,.js}'], // Para que busque entities en todas las carpetas
 // export default registerAs('typeorm', () => config);
 

@@ -1,8 +1,10 @@
 import * as dotenv from 'dotenv';
 
-dotenv.config({
-  path: '.env.development',
-});
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({
+    path: '.env.development',
+  });
+}
 
 import { DataSource } from 'typeorm';
 

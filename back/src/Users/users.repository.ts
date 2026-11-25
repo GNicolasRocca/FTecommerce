@@ -45,7 +45,13 @@ export class UsersRepository {
         country: true,
         city: true,
         is_admin: true,
-        orders: true,
+        is_active: true,
+        orders: {
+          id: true,
+          date: true,
+          user: true,
+          orderDetails: true,
+        },
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -65,7 +71,26 @@ export class UsersRepository {
         country: true,
         city: true,
         is_admin: true,
-        orders: true,
+        is_active: true,
+        orders: {
+          id: true,
+          date: true,
+          user: true,
+          orderDetails: true,
+        },
+      },
+    });
+  }
+
+  async find_user_email_auth(email: string): Promise<Users | null> {
+    return this.usersRepository.findOne({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        is_admin: true,
+        is_active: true,
       },
     });
   }
@@ -82,7 +107,14 @@ export class UsersRepository {
         address: true,
         country: true,
         city: true,
-        orders: true,
+        is_admin: true,
+        is_active: true,
+        orders: {
+          id: true,
+          date: true,
+          user: true,
+          orderDetails: true,
+        },
       },
     });
   }
@@ -97,10 +129,14 @@ export class UsersRepository {
         'El usuario que intenta actualizar no existe o fue eliminado',
       );
 
+    // Ver si hace falta crear otro metodo para asegurarse que no pueda actualizar otro usuario
+
+    /*
     if (user_exists.is_admin === false)
       throw new BadRequestException(
-        'El usuario que intenta actualizar no existe o fue eliminado',
+        '¡No puede actualizar otro usuario si no es administrador!',
       );
+    */
 
     if (user.password) {
       user.password = await this.hash_password(user.password);
@@ -134,5 +170,23 @@ export class UsersRepository {
       success: true,
       message: 'Usuario eliminado correctamente',
     };
+  }
+
+  async find_user_by_id_for_order(id: string) {
+    const user_exists = await this.usersRepository.findOne({
+      where: { id },
+    });
+
+    if (!user_exists)
+      throw new BadRequestException(
+        'El usuario que intenta buscar no existe o fue eliminado',
+      );
+
+    if (user_exists.is_active === false)
+      throw new BadRequestException(
+        'El usuario que intenta eliminar ya fue eliminado o fue eliminado',
+      );
+
+    return user_exists;
   }
 }

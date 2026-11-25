@@ -49,7 +49,9 @@ export class AuthService {
   }
 
   async signin_app(body: LoginUsersDto) {
-    const find_email = await this.usersRepository.find_user_email(body.email);
+    const find_email = await this.usersRepository.find_user_email_auth(
+      body.email,
+    );
 
     if (!find_email)
       throw new UnauthorizedException('Email o contraseña incorrecta');

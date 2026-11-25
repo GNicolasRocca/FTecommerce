@@ -18,11 +18,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from 'src/Users/users.service';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ProductResponseDto } from 'src/dtos/ProductResponsedto';
 import { Users } from 'src/Users/users.entity';
 import { Roles } from 'src/auth/roles.decorator';
 import { Role } from 'src/auth/roles.enum';
 import { ProductCreateDto } from 'src/Products/dto/ProductCreate.dto';
+import { ProductResponseDto } from './dto/ProductResponsedto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -55,6 +55,7 @@ export class ProductsController {
     return this.productsService.get_all_products();
   }
 
+  // Poner solo admin
   @ApiBearerAuth()
   @Post('create')
   @UseGuards(AuthGuard)
